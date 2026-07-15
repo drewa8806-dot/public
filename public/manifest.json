@@ -1,0 +1,27 @@
+{
+  "short_name": "ShadowVoice",
+  "name": "ShadowVoice - 3D Spatial Voice Board",
+  "description": "Proximity-based 3D Spatial Voice Chat PWA with Secret Whisper Channels",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#090d16",
+  "theme_color": "#0f172a",
+  "display": "standalone",
+  "orientation": "any",
+  "scope": "/",
+  "dir": "auto",
+  "lang": "ar-EG"
+}
