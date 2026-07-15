@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ShadowVoice">
+  
+  <title>ShadowVoice - 3D Spatial Voice Board</title>
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- Google Font: Cairo & Orbitron for Cyberpunk Vibe -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="cyberpunk-theme">
+
+  <!-- ================= WELCOME SCREEN ================= -->
+  <section id="welcome-screen" class="screen-panel active">
+    <div class="glass-card welcome-box">
+      <div class="logo-container">
+        <div class="logo-ring">
+          <div class="logo-core">
+            <svg viewBox="0 0 24 24" class="mic-svg" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+              <line x1="8" y1="22" x2="16" y2="22"/>
+            </svg>
+          </div>
+        </div>
+        <h1 class="glitch-title" data-text="SHADOWVOICE">SHADOWVOICE</h1>
+        <p class="subtitle">غرفة الصوت المحيطي ثلاثي الأبعاد والهمس السرّي</p>
+      </div>
+
+      <form id="join-form" class="cyber-form">
+        <div class="form-group">
+          <label for="username-input">اسم المستعار / Display Name</label>
+          <div class="input-wrapper">
+            <input type="text" id="username-input" placeholder="أدخل اسمك هنا..." maxlength="18" required autocomplete="off">
+            <span class="input-glow"></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>اختر لون الـ Avatar الخاص بك</label>
+          <div class="color-picker-grid">
+            <button type="button" class="color-btn active" data-color="#00f0ff" style="--btn-color: #00f0ff;"></button>
+            <button type="button" class="color-btn" data-color="#a855f7" style="--btn-color: #a855f7;"></button>
+            <button type="button" class="color-btn" data-color="#ec4899" style="--btn-color: #ec4899;"></button>
+            <button type="button" class="color-btn" data-color="#10b981" style="--btn-color: #10b981;"></button>
+            <button type="button" class="color-btn" data-color="#f59e0b" style="--btn-color: #f59e0b;"></button>
+            <button type="button" class="color-btn" data-color="#3b82f6" style="--btn-color: #3b82f6;"></button>
+          </div>
+        </div>
+
+        <!-- PWA Install Button (Hidden until install prompt is ready) -->
+        <button type="button" id="pwa-install-btn" class="cyber-btn install-btn hidden">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          تثبيت التطبيق على الهاتف (PWA)
+        </button>
+
+        <button type="submit" id="enter-room-btn" class="cyber-btn enter-btn">
+          <span>دخول الغرفة الصوتية</span>
+          <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= MAIN VOICE BOARD SCREEN ================= -->
+  <section id="board-screen" class="screen-panel">
+    
+    <!-- Top Cyber Deck Header -->
+    <header class="cyber-header">
+      <div class="header-brand">
+        <span class="status-indicator"></span>
+        <h2 class="app-brand-title">SHADOWVOICE</h2>
+      </div>
+
+      <div class="room-stats">
+        <span class="stat-badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span id="online-count">1</span> متصل
+        </span>
+      </div>
+
+      <div class="user-badge" id="my-profile-badge">
+        <div class="avatar-mini" id="my-mini-avatar"></div>
+        <span id="my-name-display">المستخدم</span>
+      </div>
+    </header>
+
+    <!-- Active Whisper Floating Banner -->
+    <div id="whisper-active-bar" class="whisper-banner hidden">
+      <div class="whisper-status-text">
+        <span class="lock-pulse">🔒</span>
+        <span>أنت الآن في <strong>"غرفة الهمس السرّية"</strong> مع <span id="whisper-partner-name">...</span></span>
+      </div>
+      <button type="button" id="leave-whisper-btn" class="cyber-btn btn-danger-sm">إنهاء الهمس والعودة</button>
+    </div>
+
+    <!-- Instructions Overlay / Quick Tip -->
+    <div id="canvas-instructions" class="canvas-tip">
+      💡 اسحب الـ Avatar الخاص بك للتحرك وتقريب/إبعاد الصوت المحيطي. اضغط على أي شخص لطلب "همس سرّي".
+    </div>
+
+    <!-- 2D Voice Board Canvas Surface -->
+    <main class="canvas-viewport" id="canvas-viewport">
+      <canvas id="voice-board-canvas"></canvas>
+    </main>
+
+    <!-- Floating Audio Control Deck -->
+    <div class="control-deck">
+      <button type="button" id="mic-toggle-btn" class="deck-btn mic-btn active" title="تشغيل/كتم المايك">
+        <svg class="mic-on-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+        <svg class="mic-off-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V5a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+        <span id="mic-btn-label">المايك مفعّل</span>
+      </button>
+
+      <div class="volume-meter-container" title="مستوى صوتك">
+        <div class="meter-bar" id="my-volume-meter"></div>
+      </div>
+
+      <button type="button" id="center-me-btn" class="deck-btn icon-only" title="إعادة التمركز">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ================= AVATAR ACTION MODAL (Whisper Request) ================= -->
+  <div id="user-action-modal" class="cyber-modal hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="target-avatar-preview" id="action-target-avatar"></div>
+        <h3 id="action-target-name">اسم المستخدم</h3>
+      </div>
+      <p class="modal-desc">ماذا تريد أن تفعل مع هذا المستخدم؟</p>
+      <div class="modal-actions">
+        <button type="button" id="send-whisper-req-btn" class="cyber-btn btn-whisper">
+          <span>🔒 طلب همس سرّي (Whisper)</span>
+        </button>
+        <button type="button" id="close-action-modal-btn" class="cyber-btn btn-ghost">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= INCOMING WHISPER INVITATION MODAL ================= -->
+  <div id="whisper-invite-modal" class="cyber-modal hidden">
+    <div class="modal-card alert-card">
+      <div class="modal-icon-glow">🔒</div>
+      <h3 id="whisper-inviter-title">طلب همس سرّي جديد!</h3>
+      <p><strong id="whisper-inviter-name">...</strong> يريد إجراء محادثة صوتية خاصة ومشفّرة معك بعيداً عن الغرفة العامة.</p>
+      <div class="modal-actions horizontal">
+        <button type="button" id="accept-whisper-btn" class="cyber-btn btn-success">قبول</button>
+        <button type="button" id="decline-whisper-btn" class="cyber-btn btn-danger">رفض</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Streams Container (Hidden) -->
+  <div id="remote-audio-container" style="display: none;"></div>
+
+  <!-- Footer Requirement -->
+  <footer class="cyber-footer">
+    <span>تم الانشاء بواسطه Youssef Mahmoud</span>
+  </footer>
+
+  <!-- Socket.IO & PeerJS CDN Scripts -->
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+
+  <!-- Modular Application Logic -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
