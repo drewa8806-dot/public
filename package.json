@@ -1,0 +1,28 @@
+{
+  "name": "shadowvoice-pwa",
+  "version": "1.0.0",
+  "description": "ShadowVoice - Real-time 3D Spatial Voice Board PWA with Private Whisper Channels",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "peer": "^1.0.2",
+    "socket.io": "^4.7.5"
+  },
+  "keywords": [
+    "pwa",
+    "webrtc",
+    "web-audio-api",
+    "spatial-audio",
+    "3d-audio",
+    "peerjs",
+    "socket.io",
+    "cyberpunk"
+  ],
+  "author": "Youssef Mahmoud",
+  "license": "MIT"
+}
